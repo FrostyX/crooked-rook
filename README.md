@@ -1,20 +1,20 @@
-# rookcrook
+# Crooked Rook
 
-[![Package Version](https://img.shields.io/hexpm/v/rookcrook)](https://hex.pm/packages/rookcrook)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/rookcrook/)
+[![Package Version](https://img.shields.io/hexpm/v/crooked_rook)](https://hex.pm/packages/crooked_rook)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/crooked_rook/)
 
 ```sh
-gleam add rookcrook@1
+gleam add crooked_rook@1
 ```
 ```gleam
-import rookcrook
+import crooked_rook
 
 pub fn main() {
   // TODO: An example of the project in use
 }
 ```
 
-Further documentation can be found at <https://hexdocs.pm/rookcrook>.
+Further documentation can be found at <https://hexdocs.pm/crooked_rook>.
 
 ## Development
 

@@ -27,7 +27,7 @@ fn ask_move() -> String {
 }
 
 pub fn main() {
-  "\u{2656} Hello from rookcrook!"
+  "\u{2656} Hello from Crooked Rook!"
   |> ansi.bg_white
   |> ansi.black
   |> io.println
