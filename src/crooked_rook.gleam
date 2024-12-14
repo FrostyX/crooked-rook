@@ -1,6 +1,7 @@
 import gleam/erlang
 import gleam/io
 import gleam_community/ansi
+import morsey
 import spinner
 
 import gleam/erlang/port.{type Port}
@@ -51,6 +52,12 @@ pub fn main() {
 
   let best = best_move(game)
   io.println("You should play: " <> best)
+  case morsey.encode(best) {
+    Ok(symbols) -> io.println("Morse code: " <> morsey.to_string(symbols))
+    Error(morsey.InvalidCharacter(char)) ->
+      io.println_error("Invalid character: " <> char)
+  }
+
   move(game, best)
 
   let position = ask_move()
@@ -59,4 +66,9 @@ pub fn main() {
   let best = best_move(game)
   io.println("You should play: " <> best)
   move(game, best)
+  case morsey.encode(best) {
+    Ok(symbols) -> io.println("Morse code: " <> morsey.to_string(symbols))
+    Error(morsey.InvalidCharacter(char)) ->
+      io.println_error("Invalid character: " <> char)
+  }
 }

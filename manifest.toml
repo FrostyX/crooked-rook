@@ -9,6 +9,7 @@ packages = [
   { name = "gleam_stdlib", version = "0.47.0", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "3B22D46743C46498C8355365243327AC731ECD3959216344FA9CF9AD348620AC" },
   { name = "glearray", version = "1.0.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "glearray", source = "hex", outer_checksum = "B99767A9BC63EF9CC8809F66C7276042E5EFEACAA5B25188B552D3691B91AC6D" },
   { name = "gleeunit", version = "1.2.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "F7A7228925D3EE7D0813C922E062BFD6D7E9310F0BEE585D3A42F3307E3CFD13" },
+  { name = "morsey", version = "1.1.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "morsey", source = "hex", outer_checksum = "73D0BAD367A2B6EF9E2EB321F13283608E01D7ECD632FA1678D8BDEB5F6A14EF" },
   { name = "repeatedly", version = "2.1.2", build_tools = ["gleam"], requirements = [], otp_app = "repeatedly", source = "hex", outer_checksum = "93AE1938DDE0DC0F7034F32C1BF0D4E89ACEBA82198A1FE21F604E849DA5F589" },
   { name = "spinner", version = "1.3.0", build_tools = ["gleam"], requirements = ["gleam_community_ansi", "gleam_stdlib", "glearray", "repeatedly"], otp_app = "spinner", source = "hex", outer_checksum = "B824C4CFDA6AC912D14365BF365F2A52C4DA63EF2D768D2A1C46D9BF7AF669E7" },
 ]
@@ -18,4 +19,5 @@ gleam_community_ansi = { version = ">= 1.4.1 and < 2.0.0" }
 gleam_erlang = { version = ">= 0.33.0 and < 1.0.0" }
 gleam_stdlib = { version = ">= 0.34.0 and < 2.0.0" }
 gleeunit = { version = ">= 1.0.0 and < 2.0.0" }
+morsey = { version = ">= 1.1.0 and < 2.0.0" }
 spinner = { version = ">= 1.3.0 and < 2.0.0" }
