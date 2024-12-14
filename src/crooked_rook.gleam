@@ -33,32 +33,28 @@ pub fn main() {
   |> ansi.black
   |> io.println
 
-  let spinner =
-    spinner.new("Reticulating 3-Dimensional Splines")
-    |> spinner.with_colour(ansi.yellow)
-    |> spinner.start
-
-  spinner.stop(spinner)
-  io.println("Done!")
-
   io.println("Opponent is playing white")
   io.println("You are playing black")
-
   let game = new_game()
 
   let position = "e2e4"
   io.println("First move by the opponent: " <> position)
   first_move(game, position)
 
+  let spinner =
+    spinner.new("Calculating best move")
+    |> spinner.with_colour(ansi.magenta)
+    |> spinner.start
   let best = best_move(game)
+  spinner.stop(spinner)
+
   io.println("You should play: " <> best)
+  move(game, best)
   case morsey.encode(best) {
     Ok(symbols) -> io.println("Morse code: " <> morsey.to_string(symbols))
     Error(morsey.InvalidCharacter(char)) ->
       io.println_error("Invalid character: " <> char)
   }
-
-  move(game, best)
 
   let position = ask_move()
   move(game, position)
