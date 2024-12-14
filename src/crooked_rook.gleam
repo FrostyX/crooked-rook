@@ -27,6 +27,46 @@ fn ask_move() -> String {
   }
 }
 
+fn print_morse(move: String) -> Nil {
+  case morsey.encode(move) {
+    Ok(symbols) -> io.println("Morse code: " <> morsey.to_string(symbols))
+    Error(morsey.InvalidCharacter(_)) -> Nil
+  }
+}
+
+fn with_spinner(function, text) {
+  let spinner =
+    spinner.new(text)
+    |> spinner.with_colour(ansi.magenta)
+    |> spinner.start
+  let result = function()
+  spinner.stop(spinner)
+  result
+}
+
+fn best_move_with_spinner(game) {
+  fn() { best_move(game) }
+  |> with_spinner("Calculating best move")
+}
+
+fn repl(game, first_round) {
+  let position = ask_move()
+  case first_round {
+    True -> first_move(game, position)
+    False -> move(game, position)
+  }
+
+  let best = best_move_with_spinner(game)
+  io.println("You should play: " <> best)
+  print_morse(best)
+  case first_round {
+    True -> first_move(game, position)
+    False -> move(game, position)
+  }
+
+  repl(game, False)
+}
+
 pub fn main() {
   "\u{2656} Hello from Crooked Rook!"
   |> ansi.bg_white
@@ -36,35 +76,5 @@ pub fn main() {
   io.println("Opponent is playing white")
   io.println("You are playing black")
   let game = new_game()
-
-  let position = "e2e4"
-  io.println("First move by the opponent: " <> position)
-  first_move(game, position)
-
-  let spinner =
-    spinner.new("Calculating best move")
-    |> spinner.with_colour(ansi.magenta)
-    |> spinner.start
-  let best = best_move(game)
-  spinner.stop(spinner)
-
-  io.println("You should play: " <> best)
-  move(game, best)
-  case morsey.encode(best) {
-    Ok(symbols) -> io.println("Morse code: " <> morsey.to_string(symbols))
-    Error(morsey.InvalidCharacter(char)) ->
-      io.println_error("Invalid character: " <> char)
-  }
-
-  let position = ask_move()
-  move(game, position)
-
-  let best = best_move(game)
-  io.println("You should play: " <> best)
-  move(game, best)
-  case morsey.encode(best) {
-    Ok(symbols) -> io.println("Morse code: " <> morsey.to_string(symbols))
-    Error(morsey.InvalidCharacter(char)) ->
-      io.println_error("Invalid character: " <> char)
-  }
+  repl(game, True)
 }
