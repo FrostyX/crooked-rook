@@ -1,12 +1,11 @@
 import gleam/erlang
+import gleam/erlang/port.{type Port}
 import gleam/io
 import gleam/list
 import gleam/string
 import gleam_community/ansi
 import morsey
 import spinner
-
-import gleam/erlang/port.{type Port}
 
 @external(erlang, "Elixir.Stockfish", "new_game")
 pub fn new_game() -> Port
@@ -17,10 +16,11 @@ pub fn move(game: Port, position: String, history: List(String)) -> Nil
 @external(erlang, "Elixir.Stockfish", "best_move")
 pub fn best_move(game: Port) -> String
 
-fn ask_move() -> String {
-  let prompt = "What move oponent did?: "
+const icon = "\u{2656}"
+
+fn ask_move(prompt) -> String {
   case erlang.get_line(prompt) {
-    Ok("\n") -> ask_move()
+    Ok("\n") -> ask_move(prompt)
     Ok(move) -> string.trim(move)
     Error(_) -> panic
   }
@@ -28,7 +28,7 @@ fn ask_move() -> String {
 
 fn print_morse(move: String) -> Nil {
   case morsey.encode(move) {
-    Ok(symbols) -> io.println("Morse code: " <> morsey.to_string(symbols))
+    Ok(symbols) -> io.println("  " <> morsey.to_string(symbols))
     Error(morsey.InvalidCharacter(_)) -> Nil
   }
 }
@@ -49,13 +49,24 @@ fn best_move_with_spinner(game) {
 }
 
 fn repl(game, history) {
-  let position = ask_move()
+  let prompt =
+    icon
+    |> ansi.white
+    |> string.append(" What move oponent did?: ")
+
+  let position = ask_move(prompt)
   move(game, position, history)
   let history = list.append(history, [position])
 
   let best = best_move_with_spinner(game)
-  io.println("You should play: " <> best)
+  icon
+  |> ansi.gray
+  |> string.append(" You should play: ")
+  |> string.append(ansi.magenta(best))
+  |> io.println
+
   print_morse(best)
+  io.println("")
   move(game, best, history)
   let history = list.append(history, [best])
 
@@ -63,13 +74,16 @@ fn repl(game, history) {
 }
 
 pub fn main() {
-  "\u{2656} Hello from Crooked Rook!"
-  |> ansi.bg_white
-  |> ansi.black
+  icon
+  |> ansi.white
+  |> string.append(" Opponent is playing white")
   |> io.println
 
-  io.println("Opponent is playing white")
-  io.println("You are playing black")
+  icon
+  |> ansi.gray
+  |> string.append(" You are playing black\n")
+  |> io.println
+
   let game = new_game()
   repl(game, [])
 }
