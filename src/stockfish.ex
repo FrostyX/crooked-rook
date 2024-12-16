@@ -17,12 +17,13 @@ defmodule Stockfish do
     port
   end
 
-  def move(game, position) do
-    Port.command(game, "position moves #{position}\n")
-  end
+  def move(game, position, history) do
+    moves =
+      history
+      |> Enum.concat([position])
+      |> Enum.join(" ")
 
-  def first_move(game, position) do
-    Port.command(game, "position startpos moves #{position}\n")
+    Port.command(game, "position startpos moves #{moves}\n")
   end
 
   def best_move(game) do
