@@ -7,6 +7,20 @@ import gleam_community/ansi
 import morsey
 import spinner
 
+const icon = "\u{2656}"
+
+type Player {
+  Friend
+  Opponent
+}
+
+type History =
+  List(String)
+
+type Game {
+  Game(port: Port, history: History, white: Player)
+}
+
 @external(erlang, "Elixir.Stockfish", "new_game")
 pub fn new_game() -> Port
 
@@ -15,8 +29,6 @@ pub fn move(game: Port, position: String, history: List(String)) -> Nil
 
 @external(erlang, "Elixir.Stockfish", "best_move")
 pub fn best_move(game: Port) -> String
-
-const icon = "\u{2656}"
 
 fn ask_move(prompt) -> String {
   case erlang.get_line(prompt) {
@@ -48,11 +60,11 @@ fn best_move_with_spinner(game) {
   |> with_spinner("Calculating best move")
 }
 
-fn play_user(game, history, player_white) {
-  let best = best_move_with_spinner(game)
-  let color = case player_white {
-    True -> ansi.white
-    False -> ansi.gray
+fn play_user(game: Game) -> Game {
+  let best = best_move_with_spinner(game.port)
+  let color = case game.white {
+    Friend -> ansi.white
+    Opponent -> ansi.gray
   }
 
   icon
@@ -63,14 +75,14 @@ fn play_user(game, history, player_white) {
 
   print_morse(best)
   io.println("")
-  move(game, best, history)
-  list.append(history, [best])
+  move(game.port, best, game.history)
+  Game(..game, history: list.append(game.history, [best]))
 }
 
-fn play_opponent(game, history, player_white) {
-  let color = case player_white {
-    True -> ansi.gray
-    False -> ansi.white
+fn play_opponent(game: Game) -> Game {
+  let color = case game.white {
+    Opponent -> ansi.white
+    Friend -> ansi.gray
   }
 
   let position =
@@ -79,36 +91,36 @@ fn play_opponent(game, history, player_white) {
     |> string.append(" What move your opponent did?: ")
     |> ask_move
 
-  move(game, position, history)
-  list.append(history, [position])
+  move(game.port, position, game.history)
+  Game(..game, history: list.append(game.history, [position]))
 }
 
-fn repl(game, history, player_white: Bool) {
-  case player_white {
-    True -> {
-      history
-      |> play_user(game, _, player_white)
-      |> play_opponent(game, _, player_white)
-      |> repl(game, _, player_white)
+fn repl(game: Game) {
+  case game.white {
+    Friend -> {
+      game
+      |> play_user
+      |> play_opponent
+      |> repl
     }
-    False -> {
-      history
-      |> play_opponent(game, _, player_white)
-      |> play_user(game, _, player_white)
-      |> repl(game, _, player_white)
+    Opponent -> {
+      game
+      |> play_opponent
+      |> play_user
+      |> repl
     }
   }
 }
 
 pub fn main() {
-  let player_white = False
+  let white = Opponent
 
   icon
   |> ansi.white
   |> string.append({
-    case player_white {
-      True -> " You are playing white"
-      False -> " Your opponent is playing white"
+    case white {
+      Friend -> " You are playing white"
+      Opponent -> " Your opponent is playing white"
     }
   })
   |> io.println
@@ -116,13 +128,13 @@ pub fn main() {
   icon
   |> ansi.gray
   |> string.append({
-    case player_white {
-      False -> " You are playing black\n"
-      True -> " Your opponent is playing black\n"
+    case white {
+      Opponent -> " You are playing black\n"
+      Friend -> " Your opponent is playing black\n"
     }
   })
   |> io.println
 
-  let game = new_game()
-  repl(game, [], player_white)
+  let game = Game(new_game(), [], white)
+  repl(game)
 }
