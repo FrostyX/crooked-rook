@@ -22,16 +22,16 @@ type Game {
 }
 
 @external(erlang, "Elixir.Stockfish", "new_game")
-pub fn new_game() -> Port
+fn new_game() -> Port
 
 @external(erlang, "Elixir.Stockfish", "move")
-pub fn move(game: Port, position: String, history: List(String)) -> Nil
+fn move(game: Port, position: String, history: List(String)) -> Nil
 
 @external(erlang, "Elixir.Stockfish", "best_move")
-pub fn best_move(game: Port) -> String
+fn best_move(game: Port) -> String
 
 @external(erlang, "Elixir.Owl.IO", "select")
-pub fn ask_color(choices: List(String)) -> String
+fn ask_color(choices: List(String)) -> String
 
 fn ask_move(prompt) -> String {
   case erlang.get_line(prompt) {
