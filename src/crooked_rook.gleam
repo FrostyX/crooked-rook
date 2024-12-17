@@ -30,6 +30,9 @@ pub fn move(game: Port, position: String, history: List(String)) -> Nil
 @external(erlang, "Elixir.Stockfish", "best_move")
 pub fn best_move(game: Port) -> String
 
+@external(erlang, "Elixir.Owl.IO", "select")
+pub fn ask_color(choices: List(String)) -> String
+
 fn ask_move(prompt) -> String {
   case erlang.get_line(prompt) {
     Ok("\n") -> ask_move(prompt)
@@ -113,7 +116,11 @@ fn repl(game: Game) {
 }
 
 pub fn main() {
-  let white = Opponent
+  io.println("What pieces are you playing?")
+  let white = case ask_color(["White", "Black"]) {
+    "White" -> Friend
+    _ -> Opponent
+  }
 
   icon
   |> ansi.white
