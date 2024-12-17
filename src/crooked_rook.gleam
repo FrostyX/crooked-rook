@@ -43,7 +43,13 @@ fn ask_move(prompt) -> String {
 
 fn print_morse(move: String) -> Nil {
   case morsey.encode(move) {
-    Ok(symbols) -> io.println("  " <> morsey.to_string(symbols))
+    Ok(symbols) ->
+      symbols
+      |> morsey.to_string
+      |> ansi.blue
+      |> string.append("  ")
+      |> io.println
+
     Error(morsey.InvalidCharacter(_)) -> Nil
   }
 }
