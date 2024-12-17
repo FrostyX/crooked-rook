@@ -48,19 +48,15 @@ fn best_move_with_spinner(game) {
   |> with_spinner("Calculating best move")
 }
 
-fn repl(game, history) {
-  let prompt =
-    icon
-    |> ansi.white
-    |> string.append(" What move oponent did?: ")
-
-  let position = ask_move(prompt)
-  move(game, position, history)
-  let history = list.append(history, [position])
-
+fn play_user(game, history, player_white) {
   let best = best_move_with_spinner(game)
+  let color = case player_white {
+    True -> ansi.white
+    False -> ansi.gray
+  }
+
   icon
-  |> ansi.gray
+  |> color
   |> string.append(" You should play: ")
   |> string.append(ansi.magenta(best))
   |> io.println
@@ -68,22 +64,65 @@ fn repl(game, history) {
   print_morse(best)
   io.println("")
   move(game, best, history)
-  let history = list.append(history, [best])
+  list.append(history, [best])
+}
 
-  repl(game, history)
+fn play_opponent(game, history, player_white) {
+  let color = case player_white {
+    True -> ansi.gray
+    False -> ansi.white
+  }
+
+  let position =
+    icon
+    |> color
+    |> string.append(" What move your opponent did?: ")
+    |> ask_move
+
+  move(game, position, history)
+  list.append(history, [position])
+}
+
+fn repl(game, history, player_white: Bool) {
+  case player_white {
+    True -> {
+      history
+      |> play_user(game, _, player_white)
+      |> play_opponent(game, _, player_white)
+      |> repl(game, _, player_white)
+    }
+    False -> {
+      history
+      |> play_opponent(game, _, player_white)
+      |> play_user(game, _, player_white)
+      |> repl(game, _, player_white)
+    }
+  }
 }
 
 pub fn main() {
+  let player_white = False
+
   icon
   |> ansi.white
-  |> string.append(" Opponent is playing white")
+  |> string.append({
+    case player_white {
+      True -> " You are playing white"
+      False -> " Your opponent is playing white"
+    }
+  })
   |> io.println
 
   icon
   |> ansi.gray
-  |> string.append(" You are playing black\n")
+  |> string.append({
+    case player_white {
+      False -> " You are playing black\n"
+      True -> " Your opponent is playing black\n"
+    }
+  })
   |> io.println
 
   let game = new_game()
-  repl(game, [])
+  repl(game, [], player_white)
 }
