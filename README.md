@@ -14,6 +14,15 @@ pub fn main() {
 }
 ```
 
+## Dependencies
+
+```
+sudo dnf install cargo rust-libdbus-sys-devel rust-libudev-sys-devel
+cargo install intiface-engine
+~/.cargo/bin/intiface-engine --websocket-port 12345 --use-bluetooth-le
+```
+
+
 Further documentation can be found at <https://hexdocs.pm/crooked_rook>.
 
 ## Development
@@ -22,3 +31,7 @@ Further documentation can be found at <https://hexdocs.pm/crooked_rook>.
 gleam run   # Run the project
 gleam test  # Run the tests
 ```
+
+## See also
+
+- https://github.com/RonSijm/ButtFish
