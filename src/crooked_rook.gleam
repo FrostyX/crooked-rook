@@ -84,30 +84,19 @@ fn vibrate(socket, morse: List(morsey.Char)) -> Nil {
   // The space between symbols (dots and dashes) of the same letter is 1 time unit.
   // The space between letters is 3 time units.
   // The space between words is 7 time units.
-
   let interval = 200
-  case list.first(morse) {
-    Ok(item) ->
-      case item {
-        morsey.Dot -> {
-          bummer.vibrate(socket, interval)
-          vibrate(socket, list.drop(morse, 1))
-        }
-        morsey.Comma -> {
-          bummer.vibrate(socket, interval * 3)
-          vibrate(socket, list.drop(morse, 1))
-        }
-        morsey.Space -> {
-          sleep(interval * 3)
-          vibrate(socket, list.drop(morse, 1))
-        }
-        morsey.Break -> {
-          sleep(interval * 7)
-          vibrate(socket, list.drop(morse, 1))
-        }
-        morsey.Invalid(_) -> vibrate(socket, list.drop(morse, 1))
+  case morse {
+    [] -> Nil
+    [first, ..rest] -> {
+      case first {
+        morsey.Dot -> bummer.vibrate(socket, interval)
+        morsey.Comma -> bummer.vibrate(socket, interval * 3)
+        morsey.Space -> sleep(interval * 3)
+        morsey.Break -> sleep(interval * 7)
+        morsey.Invalid(_) -> Nil
       }
-    Error(_) -> Nil
+      vibrate(socket, rest)
+    }
   }
 }
 
