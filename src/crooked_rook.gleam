@@ -2,7 +2,7 @@ import bummer
 import gleam/erlang
 import gleam/erlang/atom
 import gleam/erlang/port.{type Port}
-import gleam/erlang/process.{type Pid, sleep}
+import gleam/erlang/process.{sleep}
 import gleam/io
 import gleam/list
 import gleam/string
@@ -72,12 +72,12 @@ fn best_move_with_spinner(game) {
   |> with_spinner("Calculating best move")
 }
 
-fn scan_with_spinner(socket: Pid, miliseconds: Int) {
+fn scan_with_spinner(socket: bummer.Connection, miliseconds: Int) {
   fn() { bummer.scan(socket, miliseconds) }
   |> with_spinner("Connecting to a vibrating device")
 }
 
-fn vibrate(socket, morse: List(morsey.Char)) -> Nil {
+fn vibrate(socket: bummer.Connection, morse: List(morsey.Char)) -> Nil {
   // See https://www.codebug.org.uk/learn/step/541/morse-code-timing-rules/
   // The length of a dot is 1 time unit.
   // A dash is 3 time units.
@@ -100,7 +100,7 @@ fn vibrate(socket, morse: List(morsey.Char)) -> Nil {
   }
 }
 
-fn play_user(game: Game, socket: Pid) -> Game {
+fn play_user(game: Game, socket: bummer.Connection) -> Game {
   let best = best_move_with_spinner(game.port)
   let color = case game.white {
     Friend -> ansi.white
@@ -140,7 +140,7 @@ fn play_opponent(game: Game) -> Game {
   Game(..game, history: list.append(game.history, [position]))
 }
 
-fn repl(game: Game, socket: Pid) {
+fn repl(game: Game, socket: bummer.Connection) {
   case game.white {
     Friend -> {
       game
