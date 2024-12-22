@@ -77,7 +77,7 @@ fn scan_with_spinner(socket: bummer.Connection, miliseconds: Int) {
   |> with_spinner("Connecting to a vibrating device")
 }
 
-fn vibrate(socket: bummer.Connection, morse: List(morsey.Char)) -> Nil {
+fn vibrate(socket: bummer.Connection, morse: morsey.Sequence) -> Nil {
   // International Morse Code
   // 1. The length of a dot is one unit.
   // 2. A dash is three units.
