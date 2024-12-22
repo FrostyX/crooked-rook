@@ -78,12 +78,12 @@ fn scan_with_spinner(socket: bummer.Connection, miliseconds: Int) {
 }
 
 fn vibrate(socket: bummer.Connection, morse: List(morsey.Char)) -> Nil {
-  // See https://www.codebug.org.uk/learn/step/541/morse-code-timing-rules/
-  // The length of a dot is 1 time unit.
-  // A dash is 3 time units.
-  // The space between symbols (dots and dashes) of the same letter is 1 time unit.
-  // The space between letters is 3 time units.
-  // The space between words is 7 time units.
+  // International Morse Code
+  // 1. The length of a dot is one unit.
+  // 2. A dash is three units.
+  // 3. The space between parts of the same letter is one unit.
+  // 4. The space between letters is three units.
+  // 5. The space between words is seven units.
   let interval = 200
   case morse {
     [] -> Nil
