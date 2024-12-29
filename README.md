@@ -1,18 +1,12 @@
 # Crooked Rook
 
-[![Package Version](https://img.shields.io/hexpm/v/crooked_rook)](https://hex.pm/packages/crooked_rook)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/crooked_rook/)
+All information about the project are in this blog post
+- <https://frostyx.cz/posts/shoving-a-chess-engine-up-your-butt>
 
-```sh
-gleam add crooked_rook@1
-```
-```gleam
-import crooked_rook
+See this two-minute video.
 
-pub fn main() {
-  // TODO: An example of the project in use
-}
-```
+[![Demo](https://i1.ytimg.com/vi/HAxBOoBoVTM/maxresdefault.jpg)](https://www.youtube.com/watch?v=HAxBOoBoVTM)
+
 
 ## Dependencies
 
@@ -22,15 +16,8 @@ cargo install intiface-engine
 ~/.cargo/bin/intiface-engine --websocket-port 12345 --use-bluetooth-le
 ```
 
-
 Further documentation can be found at <https://hexdocs.pm/crooked_rook>.
 
-## Development
-
-```sh
-gleam run   # Run the project
-gleam test  # Run the tests
-```
 
 ## See also
 
