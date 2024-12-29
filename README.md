@@ -1,9 +1,7 @@
 # Crooked Rook
 
-All information about the project are in this blog post
-- <https://frostyx.cz/posts/shoving-a-chess-engine-up-your-butt>
-
-See this two-minute video.
+All information about the project are in this blog post - <https://frostyx.cz/posts/shoving-a-chess-engine-up-your-butt>.
+Also, please see this two-minute video:
 
 [![Demo](https://i1.ytimg.com/vi/HAxBOoBoVTM/maxresdefault.jpg)](https://www.youtube.com/watch?v=HAxBOoBoVTM)
 
