@@ -14,8 +14,6 @@ cargo install intiface-engine
 ~/.cargo/bin/intiface-engine --websocket-port 12345 --use-bluetooth-le
 ```
 
-Further documentation can be found at <https://hexdocs.pm/crooked_rook>.
-
 
 ## See also
 
